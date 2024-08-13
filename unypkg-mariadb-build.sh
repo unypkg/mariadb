@@ -96,7 +96,7 @@ cmake -DCMAKE_BUILD_TYPE=mysql_release \
     -DTOKUDB_OK=0 \
     ..
 
-cmake --build .. --parallel="$(nproc)"
+cmake --build . --parallel="$(nproc)"
 cmake --install
 
 ####################################################

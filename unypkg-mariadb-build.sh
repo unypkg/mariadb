@@ -11,7 +11,7 @@ set -vx
 wget -qO- uny.nu/pkg | bash -s buildsys
 
 ### Installing build dependencies
-#unyp install python expat openssl
+unyp install cmake libxml2 libaio pcre2 libevent
 
 #pip3_bin=(/uny/pkg/python/*/bin/pip3)
 #"${pip3_bin[0]}" install --upgrade pip
@@ -35,12 +35,12 @@ mkdir -pv /uny/sources
 cd /uny/sources || exit
 
 pkgname="mariadb"
-pkggit="https://github.com/mariadb/mariadb.git refs/tags/*"
+pkggit="https://github.com/MariaDB/server.git refs/tags/mariadb-*"
 gitdepth="--depth=1"
 
 ### Get version info from git remote
 # shellcheck disable=SC2086
-latest_head="$(git ls-remote --refs --tags --sort="v:refname" $pkggit | grep -E "v[0-9.]+$" | tail --lines=1)"
+latest_head="$(git ls-remote --refs --tags --sort="v:refname" $pkggit | grep -E "mariadb-[0-9.]+$" | tail --lines=1)"
 latest_ver="$(echo "$latest_head" | grep -o "v[0-9.].*" | sed "s|v||")"
 latest_commit_id="$(echo "$latest_head" | cut --fields=1)"
 
@@ -77,12 +77,21 @@ get_include_paths
 
 unset LD_RUN_PATH
 
-./configure \
-    --prefix=/uny/pkg/"$pkgname"/"$pkgver"
+mkdir build
+cd build || exit
 
-make -j"$(nproc)"
-make -j"$(nproc)" check 
-make -j"$(nproc)" install
+cmake -DCMAKE_BUILD_TYPE=mysql_release \
+    -DCMAKE_INSTALL_PREFIX=/uny/pkg/"$pkgname"/"$pkgver" \
+    -DGRN_LOG_PATH=/var/log/groonga.log \
+    -DMYSQL_UNIX_ADDR=/run/mysqld/mysqld.sock \
+    -DWITH_EXTRA_CHARSETS=complex \
+    -DWITH_EMBEDDED_SERVER=ON \
+    -DSKIP_TESTS=ON \
+    -DTOKUDB_OK=0 \
+    ..
+
+cmake --build .. --parallel="$(nproc)"
+cmake --install
 
 ####################################################
 ### End of individual build script

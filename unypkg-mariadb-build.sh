@@ -13,7 +13,7 @@ wget -qO- uny.nu/pkg | bash -s buildsys
 ### Installing build dependencies
 unyp install cmake libxml2 libaio pcre2 libevent openssl
 
-cp -a /uny/pkg/ncurses/*/include/*/* /uny/pkg/ncurses/*/include/
+#cp -a /uny/pkg/ncurses/*/include/*/* /uny/pkg/ncurses/*/include/
 
 #pip3_bin=(/uny/pkg/python/*/bin/pip3)
 #"${pip3_bin[0]}" install --upgrade pip
@@ -82,8 +82,12 @@ unset LD_RUN_PATH
 mkdir build
 cd build || exit
 
+ncurses_path=(/uny/pkg/ncurses/*)
+
 cmake -DCMAKE_BUILD_TYPE=mysql_release \
     -DCMAKE_INSTALL_PREFIX=/uny/pkg/"$pkgname"/"$pkgver" \
+    -DCURSES_LIBRARY="${ncurses_path[0]}"/lib/libncursesw.so \
+    -DCURSES_INCLUDE_PATH="${ncurses_path[0]}"/include \
     -DGRN_LOG_PATH=/var/log/groonga.log \
     -DMYSQL_UNIX_ADDR=/run/mysqld/mysqld.sock \
     -DWITH_EXTRA_CHARSETS=complex \

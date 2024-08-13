@@ -11,7 +11,9 @@ set -vx
 wget -qO- uny.nu/pkg | bash -s buildsys
 
 ### Installing build dependencies
-unyp install cmake libxml2 libaio pcre2 libevent
+unyp install cmake libxml2 libaio pcre2 libevent openssl
+
+cp -a /uny/pkg/ncurses/*/include/*/* /uny/pkg/ncurses/*/include/
 
 #pip3_bin=(/uny/pkg/python/*/bin/pip3)
 #"${pip3_bin[0]}" install --upgrade pip

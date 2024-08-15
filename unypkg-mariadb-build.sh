@@ -11,7 +11,7 @@ apt install -y jq
 wget -qO- uny.nu/pkg | bash -s buildsys
 
 ### Installing build dependencies
-unyp install cmake libxml2 libaio pcre2 libevent openssl
+unyp install cmake libxml2 libaio pcre2 libevent openssl curl
 
 #cp -a /uny/pkg/ncurses/*/include/*/* /uny/pkg/ncurses/*/include/
 
@@ -86,7 +86,7 @@ cd build || exit
 
 ncurses_path=(/uny/pkg/ncurses/*)
 
-cmake -DCMAKE_BUILD_TYPE=mysql_release \
+cmake -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/uny/pkg/"$pkgname"/"$pkgver" \
     -DCURSES_LIBRARY="${ncurses_path[0]}"/lib/libncursesw.so \
     -DCURSES_INCLUDE_PATH="${ncurses_path[0]}"/include \

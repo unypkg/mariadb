@@ -6,7 +6,7 @@ set -vx
 ######################################################################################################################
 ### Setup Build System and GitHub
 
-##apt install -y autopoint
+apt install -y jq
 
 wget -qO- uny.nu/pkg | bash -s buildsys
 
@@ -36,8 +36,10 @@ uny_build_date
 mkdir -pv /uny/sources
 cd /uny/sources || exit
 
+latest_stable_ver_start="$(wget -O- -q https://downloads.mariadb.org/rest-api/mariadb/ | jq -r '[.major_releases[] | select(.release_support_type=="Long Term Support")][0].release_id')"
+
 pkgname="mariadb"
-pkggit="https://github.com/MariaDB/server.git refs/tags/mariadb-*"
+pkggit="https://github.com/MariaDB/server.git refs/tags/mariadb-$latest_stable_ver_start*"
 gitdepth="--depth=1"
 
 ### Get version info from git remote

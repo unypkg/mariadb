@@ -92,7 +92,7 @@ cmake -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/uny/pkg/"$pkgname"/"$pkgver" \
     -DCURSES_LIBRARY="${ncurses_path[0]}"/lib/libncursesw.so \
     -DCURSES_INCLUDE_PATH="${ncurses_path[0]}"/include \
-    -DLIBXML2_INCLUDE_DIR="${libxml2_path[0]}"/include/libxml2/ \
+    -DLIBXML2_INCLUDE_DIR="${libxml2_path[0]}"/include \
     -DLIBAIO_LIBRARIES="${libaio_path[0]}"/lib/libaio.so \
     -DLIBAIO_INCLUDE_DIRS="${libaio_path[0]}"/include \
     -DGRN_LOG_PATH=/var/log/groonga.log \
@@ -103,8 +103,11 @@ cmake -DCMAKE_BUILD_TYPE=Release \
     -DTOKUDB_OK=0 \
     ..
 
-cmake --build . --parallel="$(nproc)"
-cmake --install
+make -j"$(nproc)"
+make -j"$(nproc)" install
+
+#cmake --build . --parallel="$(nproc)"
+#cmake --install
 
 ####################################################
 ### End of individual build script

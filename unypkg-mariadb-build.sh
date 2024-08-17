@@ -83,6 +83,9 @@ unset LD_RUN_PATH
 mkdir build
 cd build || exit
 
+export CFLAGS=""
+export CXXFLAGS="${CFLAGS}"
+
 ncurses_path=(/uny/pkg/ncurses/*)
 libxml2_path=(/uny/pkg/libxml2/*)
 libaio_path=(/uny/pkg/libaio/*)
@@ -115,11 +118,17 @@ cmake -DCMAKE_BUILD_TYPE=Release \
     -DWITH_SYSTEMD=yes \
     -DWITH_UNIT_TESTS=OFF \
     -DWITH_ZLIB=system \
+    -DWITHOUT_CLIENTLIBS=YES \
+    -DCLIENT_PLUGIN_DIALOG=OFF \
+    -DCLIENT_PLUGIN_AUTH_GSSAPI_CLIENT=OFF \
+    -DCLIENT_PLUGIN_CLIENT_ED25519=OFF \
+    -DCLIENT_PLUGIN_MYSQL_CLEAR_PASSWORD=STATIC \
+    -DCLIENT_PLUGIN_CACHING_SHA2_PASSWORD=OFF \
     -DSKIP_TESTS=ON \
     -DTOKUDB_OK=0 \
     ..
 
-make -j"$(nproc)"
+make -j"$(nproc)" VERBOSE=1
 make -j"$(nproc)" install
 
 #cmake --build . --parallel="$(nproc)"

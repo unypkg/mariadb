@@ -11,7 +11,7 @@ apt install -y jq
 wget -qO- uny.nu/pkg | bash -s buildsys
 
 ### Installing build dependencies
-unyp install cmake libxml2 libaio pcre2 libevent openssl curl boost fmt procps systemd liburing lz4
+unyp install cmake libxml2 libaio pcre2 libevent openssl curl boost fmt procps systemd liburing lz4 jemalloc
 
 #cp -a /uny/pkg/ncurses/*/include/*/* /uny/pkg/ncurses/*/include/
 
@@ -98,11 +98,29 @@ cmake -DCMAKE_BUILD_TYPE=Release \
     -DGRN_LOG_PATH=/var/log/groonga.log \
     -DMYSQL_UNIX_ADDR=/run/mysqld/mysqld.sock \
     -DMYSQL_DATADIR=/var/lib/mysql \
-    -DWITH_EXTRA_CHARSETS=complex \
+    -DDEFAULT_CHARSET=utf8mb4 \
+    -DDEFAULT_COLLATION=utf8mb4_unicode_ci \
+    -DENABLED_LOCAL_INFILE=ON \
+    -DPLUGIN_EXAMPLE=NO \
+    -DPLUGIN_FEDERATED=NO \
+    -DPLUGIN_FEEDBACK=NO \
     -DWITH_EMBEDDED_SERVER=ON \
+    -DWITH_EXTRA_CHARSETS=complex \
+    -DWITH_JEMALLOC=ON \
+    -DWITH_LIBWRAP=OFF \
+    -DWITH_PCRE2=system \
+    -DWITH_READLINE=ON \
+    -DWITH_SSL=system \
+    -DWITH_SYSTEMD=yes \
+    -DWITH_UNIT_TESTS=OFF \
+    -DWITH_ZLIB=system \
     -DSKIP_TESTS=ON \
     -DTOKUDB_OK=0 \
     ..
+
+
+
+
 
 make -j"$(nproc)"
 make -j"$(nproc)" install

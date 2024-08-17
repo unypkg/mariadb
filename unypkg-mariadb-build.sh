@@ -118,10 +118,6 @@ cmake -DCMAKE_BUILD_TYPE=Release \
     -DTOKUDB_OK=0 \
     ..
 
-
-
-
-
 make -j"$(nproc)"
 make -j"$(nproc)" install
 

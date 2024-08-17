@@ -11,7 +11,7 @@ apt install -y jq
 wget -qO- uny.nu/pkg | bash -s buildsys
 
 ### Installing build dependencies
-unyp install cmake libxml2 libaio pcre2 libevent openssl curl boost fmt snappy procps systemd
+unyp install cmake libxml2 libaio pcre2 libevent openssl curl boost fmt procps systemd liburing lz4
 
 #cp -a /uny/pkg/ncurses/*/include/*/* /uny/pkg/ncurses/*/include/
 
@@ -97,6 +97,7 @@ cmake -DCMAKE_BUILD_TYPE=Release \
     -DLIBAIO_INCLUDE_DIRS="${libaio_path[0]}"/include \
     -DGRN_LOG_PATH=/var/log/groonga.log \
     -DMYSQL_UNIX_ADDR=/run/mysqld/mysqld.sock \
+    -DMYSQL_DATADIR=/var/lib/mysql \
     -DWITH_EXTRA_CHARSETS=complex \
     -DWITH_EMBEDDED_SERVER=ON \
     -DSKIP_TESTS=ON \

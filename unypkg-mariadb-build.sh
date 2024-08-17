@@ -83,8 +83,8 @@ unset LD_RUN_PATH
 mkdir build
 cd build || exit
 
-export CFLAGS=""
-export CXXFLAGS="${CFLAGS}"
+#export CFLAGS=""
+#export CXXFLAGS="${CFLAGS}"
 
 ncurses_path=(/uny/pkg/ncurses/*)
 libxml2_path=(/uny/pkg/libxml2/*)
@@ -126,6 +126,7 @@ cmake -DCMAKE_BUILD_TYPE=Release \
     -DCLIENT_PLUGIN_CACHING_SHA2_PASSWORD=OFF \
     -DSKIP_TESTS=ON \
     -DTOKUDB_OK=0 \
+    -DWITH_COMMENT="unypkg" \
     ..
 
 make -j"$(nproc)" VERBOSE=1

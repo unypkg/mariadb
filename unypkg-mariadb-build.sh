@@ -11,7 +11,7 @@ apt install -y jq
 wget -qO- uny.nu/pkg | bash -s buildsys
 
 ### Installing build dependencies
-unyp install cmake libxml2 libaio pcre2 libevent openssl curl boost fmt procps liburing lz4 jemalloc
+unyp install cmake libxml2 libaio pcre2 libevent openssl curl boost fmt procps liburing lz4 jemalloc systemd
 
 #cp -a /uny/pkg/ncurses/*/include/*/* /uny/pkg/ncurses/*/include/
 
@@ -89,6 +89,7 @@ libaio_path=(/uny/pkg/libaio/*)
 
 cmake -DCMAKE_BUILD_TYPE=Release \
     -DWITH_LIBFMT=system \
+    -Wno-dev \
     -DCMAKE_INSTALL_PREFIX=/uny/pkg/"$pkgname"/"$pkgver" \
     -DCURSES_LIBRARY="${ncurses_path[0]}"/lib/libncursesw.so \
     -DCURSES_INCLUDE_PATH="${ncurses_path[0]}"/include \
@@ -111,7 +112,7 @@ cmake -DCMAKE_BUILD_TYPE=Release \
     -DWITH_PCRE2=system \
     -DWITH_READLINE=ON \
     -DWITH_SSL=system \
-    -DWITH_SYSTEMD=no \
+    -DWITH_SYSTEMD=yes \
     -DWITH_UNIT_TESTS=OFF \
     -DWITH_ZLIB=system \
     -DSKIP_TESTS=ON \

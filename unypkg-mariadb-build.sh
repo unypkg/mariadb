@@ -65,7 +65,7 @@ archiving_source
 
 # unyc - run commands in uny's chroot environment
 # shellcheck disable=SC2154
-unyc <<"UNYEOF"
+unyc #<<"UNYEOF"
 set -vx
 source /uny/git/unypkg/fn
 
@@ -86,6 +86,19 @@ cd build || exit
 #export CFLAGS=""
 #export CXXFLAGS="${CFLAGS}"
 
+set +vx
+for includedir in {/uny/pkg/*/*/include,/uny/pkg/*/*/include/*}; do
+    if [ -z "$CMAKE_INCLUDE_PATH" ]; then
+        export CMAKE_INCLUDE_PATH="$includedir"
+    else
+        export CMAKE_INCLUDE_PATH="$CMAKE_INCLUDE_PATH:$includedir"
+    fi
+done
+export CMAKE_INCLUDE_PATH
+set -vx
+echo "CMAKE_INCLUDE_PATH is:"
+echo "$CMAKE_INCLUDE_PATH"
+
 ncurses_path=(/uny/pkg/ncurses/*)
 libxml2_path=(/uny/pkg/libxml2/*)
 libaio_path=(/uny/pkg/libaio/*)
@@ -95,7 +108,6 @@ cmake -DCMAKE_BUILD_TYPE=Release \
     -Wno-dev \
     -DCMAKE_INSTALL_PREFIX=/uny/pkg/"$pkgname"/"$pkgver" \
     -DCURSES_LIBRARY="${ncurses_path[0]}"/lib/libncursesw.so \
-    -DCURSES_INCLUDE_PATH="${ncurses_path[0]}"/include/ncursesw/ \
     -DLIBXML2_INCLUDE_DIR="${libxml2_path[0]}"/include \
     -DLIBAIO_LIBRARIES="${libaio_path[0]}"/lib/libaio.so \
     -DLIBAIO_INCLUDE_DIRS="${libaio_path[0]}"/include \
@@ -122,6 +134,8 @@ cmake -DCMAKE_BUILD_TYPE=Release \
     -DTOKUDB_OK=0 \
     -DWITH_COMMENT="unypkg" \
     ..
+
+#    -DCURSES_INCLUDE_PATH="${ncurses_path[0]}"/include/ncursesw/ \
 
 make -j"$(nproc)" VERBOSE=1
 make -j"$(nproc)" install

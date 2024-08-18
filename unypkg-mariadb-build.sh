@@ -11,7 +11,7 @@ apt install -y jq
 wget -qO- uny.nu/pkg | bash -s buildsys
 
 ### Installing build dependencies
-unyp install cmake libxml2 libaio pcre2 libevent openssl curl boost fmt procps liburing lz4 jemalloc systemd
+unyp install cmake libxml2 libaio pcre2 libevent openssl curl boost fmt procps liburing lz4 jemalloc systemd ncurses
 
 #cp -a /uny/pkg/ncurses/*/include/*/* /uny/pkg/ncurses/*/include/
 
@@ -102,16 +102,20 @@ cd build || exit
 ncurses_path=(/uny/pkg/ncurses/*)
 libxml2_path=(/uny/pkg/libxml2/*)
 libaio_path=(/uny/pkg/libaio/*)
+liburing_path=(/uny/pkg/liburing/*)
+
+#export CMAKE_REQUIRED_INCLUDES="${ncurses_path[0]}/include"
+#export CMAKE_LIBRARY_PATH="${ncurses_path[0]}/lib"
 
 cmake -DCMAKE_BUILD_TYPE=Release \
     -DWITH_LIBFMT=system \
     -Wno-dev \
     -DCMAKE_INSTALL_PREFIX=/uny/pkg/"$pkgname"/"$pkgver" \
-    -DCURSES_LIBRARY="${ncurses_path[0]}"/lib/libncursesw.so \
-    -DCURSES_INCLUDE_PATH="${ncurses_path[0]}"/include/ncursesw \
     -DLIBXML2_INCLUDE_DIR="${libxml2_path[0]}"/include \
     -DLIBAIO_LIBRARIES="${libaio_path[0]}"/lib/libaio.so \
     -DLIBAIO_INCLUDE_DIRS="${libaio_path[0]}"/include \
+    -DLIBURING_LIBRARIES="${liburing_path[0]}"/lib/liburing.so \
+    -DLIBURING_INCLUDE_DIRS="${liburing_path[0]}"/include \
     -DGRN_LOG_PATH=/var/log/groonga.log \
     -DMYSQL_UNIX_ADDR=/run/mysqld/mysqld.sock \
     -DMYSQL_DATADIR=/var/lib/mysql \
@@ -136,7 +140,19 @@ cmake -DCMAKE_BUILD_TYPE=Release \
     -DWITH_COMMENT="unypkg" \
     ..
 
-#    -DCURSES_INCLUDE_PATH="${ncurses_path[0]}"/include/ncursesw/ \
+#    -DCURSES_LIBRARY="${ncurses_path[0]}"/lib/libncursesw.so \
+#    -DCURSES_INCLUDE_PATH="${ncurses_path[0]}"/include \
+
+#    -DCURSES_CURSES_LIBRARY="${ncurses_path[0]}"/lib/libncursesw.so \
+#    -DCURSES_FORM_LIBRARY="${ncurses_path[0]}"/lib/libformw.so  \
+
+#    -DCURSES_INCLUDE_PATH="${ncurses_path[0]}"/include \
+
+#    -DCURSES_NCURSES_INCLUDE_PATH="${ncurses_path[0]}"/include \
+#    -DCURSES_NCURSES_LIBRARY="${ncurses_path[0]}"/lib/libncursesw.so \
+
+#    -DCURSES_NEED_WIDE=TRUE \
+#    -DCURSES_USE_NCURSES=TRUE \
 
 make -j"$(nproc)" VERBOSE=1
 make -j"$(nproc)" install

@@ -83,8 +83,8 @@ unset LD_RUN_PATH
 mkdir build
 cd build || exit
 
-#export CFLAGS=""
-#export CXXFLAGS="${CFLAGS}"
+export CFLAGS=""
+export CXXFLAGS="${CFLAGS}"
 
 #set +vx
 #for includedir in {/uny/pkg/*/*/include,/uny/pkg/*/*/include/*}; do

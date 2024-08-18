@@ -95,7 +95,7 @@ cmake -DCMAKE_BUILD_TYPE=Release \
     -Wno-dev \
     -DCMAKE_INSTALL_PREFIX=/uny/pkg/"$pkgname"/"$pkgver" \
     -DCURSES_LIBRARY="${ncurses_path[0]}"/lib/libncursesw.so \
-    -DCURSES_INCLUDE_PATH="${ncurses_path[0]}"/include/ncursesw \
+    -DCURSES_INCLUDE_PATH="${ncurses_path[0]}"/include/ncursesw/ \
     -DLIBXML2_INCLUDE_DIR="${libxml2_path[0]}"/include \
     -DLIBAIO_LIBRARIES="${libaio_path[0]}"/lib/libaio.so \
     -DLIBAIO_INCLUDE_DIRS="${libaio_path[0]}"/include \

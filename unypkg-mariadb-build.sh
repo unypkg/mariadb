@@ -91,7 +91,7 @@ liburing_path=(/uny/pkg/liburing/*)
 export CFLAGS="-I"${ncurses_path[0]}"/include/ncursesw"
 export CXXFLAGS="${CFLAGS}"
 
-cmake -DCMAKE_BUILD_TYPE=mysql_release \
+cmake -DCMAKE_BUILD_TYPE=MinSizeRel \
     -DWITH_LIBFMT=system \
     -Wno-dev \
     -DCMAKE_INSTALL_PREFIX=/uny/pkg/"$pkgname"/"$pkgver" \
@@ -119,9 +119,17 @@ cmake -DCMAKE_BUILD_TYPE=mysql_release \
     -DWITH_SSL=system \
     -DWITH_SYSTEMD=yes \
     -DWITH_UNIT_TESTS=OFF \
+    -DCONC_WITH_UNIT_TESTS=OFF \
     -DWITH_ZLIB=system \
     -DSKIP_TESTS=ON \
     -DTOKUDB_OK=0 \
+    -DINSTALL_MYSQLTESTDIR= \
+    -DWITHOUT_CLIENTLIBS=YES \
+    -DCLIENT_PLUGIN_DIALOG=OFF \
+    -DCLIENT_PLUGIN_AUTH_GSSAPI_CLIENT=OFF \
+    -DCLIENT_PLUGIN_CLIENT_ED25519=OFF \
+    -DCLIENT_PLUGIN_MYSQL_CLEAR_PASSWORD=STATIC \
+    -DCLIENT_PLUGIN_CACHING_SHA2_PASSWORD=OFF \
     -DWITH_COMMENT="unypkg" \
     ..
 

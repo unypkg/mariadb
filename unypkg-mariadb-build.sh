@@ -136,6 +136,7 @@ cmake -DCMAKE_BUILD_TYPE=Release \
     -DPLUGIN_COLUMNSTORE=NO \
     -DWITH_NUMA=AUTO \
     -DCONNECT_WITH_MONGO=OFF \
+    -DPLUGIN_AUTH_PAM=NO \
     ..
 
 make -j"$(nproc)"

@@ -91,7 +91,8 @@ liburing_path=(/uny/pkg/liburing/*)
 export CFLAGS="-I"${ncurses_path[0]}"/include/ncursesw"
 export CXXFLAGS="${CFLAGS}"
 
-cmake -DCMAKE_BUILD_TYPE=MinSizeRel \
+cmake -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_CONFIG=mysql_release \
     -DWITH_LIBFMT=system \
     -Wno-dev \
     -DCMAKE_INSTALL_PREFIX=/uny/pkg/"$pkgname"/"$pkgver" \
@@ -99,12 +100,14 @@ cmake -DCMAKE_BUILD_TYPE=MinSizeRel \
     -DLIBXML2_INCLUDE_DIR="${libxml2_path[0]}"/include \
     -DLIBAIO_LIBRARIES="${libaio_path[0]}"/lib/libaio.so \
     -DLIBAIO_INCLUDE_DIRS="${libaio_path[0]}"/include \
+    -DWITH_URING=ON \
     -DLIBURING_LIBRARIES="${liburing_path[0]}"/lib/liburing.so \
     -DLIBURING_INCLUDE_DIRS="${liburing_path[0]}"/include \
     -DGRN_LOG_PATH=/var/log/groonga.log \
     -DMYSQL_UNIX_ADDR=/run/mysqld/mysqld.sock \
     -DMYSQL_DATADIR=/var/lib/mysql \
     -DDEFAULT_CHARSET=utf8mb4 \
+    -DCONC_DEFAULT_CHARSET=utf8mb4 \
     -DDEFAULT_COLLATION=utf8mb4_unicode_ci \
     -DENABLED_LOCAL_INFILE=ON \
     -DPLUGIN_EXAMPLE=NO \
@@ -123,14 +126,14 @@ cmake -DCMAKE_BUILD_TYPE=MinSizeRel \
     -DWITH_ZLIB=system \
     -DSKIP_TESTS=ON \
     -DTOKUDB_OK=0 \
-    -DINSTALL_MYSQLTESTDIR= \
-    -DWITHOUT_CLIENTLIBS=YES \
-    -DCLIENT_PLUGIN_DIALOG=OFF \
-    -DCLIENT_PLUGIN_AUTH_GSSAPI_CLIENT=OFF \
-    -DCLIENT_PLUGIN_CLIENT_ED25519=OFF \
-    -DCLIENT_PLUGIN_MYSQL_CLEAR_PASSWORD=STATIC \
-    -DCLIENT_PLUGIN_CACHING_SHA2_PASSWORD=OFF \
     -DWITH_COMMENT="unypkg" \
+    -DWITHOUT_CLIENTLIBS=YES \
+    -DINSTALL_MYSQLTESTDIR="" \
+    -DINSTALL_SQLBENCHDIR="" \
+    -DPLUGIN_AWS_KEY_MANAGEMENT=NO \
+    -DPLUGIN_COLUMNSTORE=NO \
+    -DWITH_NUMA=AUTO \
+    -DCONNECT_WITH_MONGO=OFF \
     ..
 
 make -j"$(nproc)"

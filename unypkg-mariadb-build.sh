@@ -88,7 +88,7 @@ libxml2_path=(/uny/pkg/libxml2/*)
 libaio_path=(/uny/pkg/libaio/*)
 liburing_path=(/uny/pkg/liburing/*)
 
-export CFLAGS="-I"${ncurses_path[0]}"/include/ncursesw"
+export CFLAGS="-I${ncurses_path[0]}/include/ncursesw -I${liburing_path[0]}/include"
 export CXXFLAGS="${CFLAGS}"
 
 cmake -DCMAKE_BUILD_TYPE=Release \

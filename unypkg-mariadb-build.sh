@@ -11,7 +11,7 @@ apt install -y jq
 wget -qO- uny.nu/pkg | bash -s buildsys
 
 ### Installing build dependencies
-unyp install cmake libxml2 libaio pcre2 libevent openssl curl boost fmt procps liburing lz4 jemalloc systemd ncurses
+unyp install cmake libxml2 pcre2 libevent openssl curl boost fmt procps liburing lz4 jemalloc systemd ncurses
 
 #cp -a /uny/pkg/ncurses/*/include/*/* /uny/pkg/ncurses/*/include/
 
@@ -85,24 +85,23 @@ cd build || exit
 
 ncurses_path=(/uny/pkg/ncurses/*)
 libxml2_path=(/uny/pkg/libxml2/*)
-libaio_path=(/uny/pkg/libaio/*)
+pcre2_path=(/uny/pkg/pcre2/*)
 liburing_path=(/uny/pkg/liburing/*)
 
-export CFLAGS="-I${ncurses_path[0]}/include/ncursesw -I${liburing_path[0]}/include" #
+export CFLAGS="-I${ncurses_path[0]}/include/ncursesw -I${pcre2_path[0]}/include" #-I${liburing_path[0]}/include
 export CXXFLAGS="${CFLAGS}"
 
 cmake -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_CONFIG=mysql_release \
     -DWITH_LIBFMT=system \
     -Wno-dev \
+    -DWITH_PCRE=system \
+    -DPCRE_LIBRARY_DIRS="${pcre2_path[0]}"/lib \
+    -DPCRE_INCLUDE_DIRS="${pcre2_path[0]}"/include \
     -DCMAKE_INSTALL_PREFIX=/uny/pkg/"$pkgname"/"$pkgver" \
     -DCURSES_INCLUDE_PATH="${ncurses_path[0]}"/include/ncursesw \
     -DLIBXML2_INCLUDE_DIR="${libxml2_path[0]}"/include \
-    -DLIBAIO_LIBRARIES="${libaio_path[0]}"/lib/libaio.so \
-    -DLIBAIO_INCLUDE_DIRS="${libaio_path[0]}"/include \
     -DWITH_URING=ON \
-    -DLIBURING_LIBRARIES="${liburing_path[0]}"/lib/liburing.so \
-    -DLIBURING_INCLUDE_DIRS="${liburing_path[0]}"/include \
     -DURING_LIBRARIES="${liburing_path[0]}"/lib/liburing.so \
     -DURING_INCLUDE_DIRS="${liburing_path[0]}"/include \
     -DGRN_LOG_PATH=/var/log/groonga.log \
@@ -119,7 +118,6 @@ cmake -DCMAKE_BUILD_TYPE=Release \
     -DWITH_EXTRA_CHARSETS=complex \
     -DWITH_JEMALLOC=ON \
     -DWITH_LIBWRAP=OFF \
-    -DWITH_PCRE2=system \
     -DWITH_READLINE=ON \
     -DWITH_SSL=system \
     -DWITH_SYSTEMD=yes \
@@ -132,10 +130,8 @@ cmake -DCMAKE_BUILD_TYPE=Release \
     -DWITHOUT_CLIENTLIBS=YES \
     -DINSTALL_MYSQLTESTDIR="" \
     -DINSTALL_SQLBENCHDIR="" \
-    -DPLUGIN_AWS_KEY_MANAGEMENT=NO \
-    -DPLUGIN_COLUMNSTORE=NO \
-    -DCONNECT_WITH_MONGO=OFF \
     -DPLUGIN_AUTH_PAM=NO \
+    -DPLUGIN_AWS_KEY_MANAGEMENT=NO \
     ..
 
 make -j"$(nproc)"

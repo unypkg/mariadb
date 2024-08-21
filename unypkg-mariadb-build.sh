@@ -88,7 +88,7 @@ libxml2_path=(/uny/pkg/libxml2/*)
 libaio_path=(/uny/pkg/libaio/*)
 liburing_path=(/uny/pkg/liburing/*)
 
-export CFLAGS="-I${ncurses_path[0]}/include/ncursesw -I${liburing_path[0]}/include"
+export CFLAGS="-I${ncurses_path[0]}/include/ncursesw" #-I${liburing_path[0]}/include
 export CXXFLAGS="${CFLAGS}"
 
 cmake -DCMAKE_BUILD_TYPE=Release \
@@ -101,9 +101,9 @@ cmake -DCMAKE_BUILD_TYPE=Release \
     -DLIBAIO_LIBRARIES="${libaio_path[0]}"/lib/libaio.so \
     -DLIBAIO_INCLUDE_DIRS="${libaio_path[0]}"/include \
     -DWITH_URING=ON \
-    -DLIBURING_LIBRARIES="${liburing_path[0]}"/lib/liburing.so:"${liburing_path[0]}"/lib/liburing-ffi.so \
+    -DLIBURING_LIBRARIES="${liburing_path[0]}"/lib/liburing.so \
     -DLIBURING_INCLUDE_DIRS="${liburing_path[0]}"/include \
-    -DURING_LIBRARIES="${liburing_path[0]}"/lib/liburing.so:"${liburing_path[0]}"/lib/liburing-ffi.so \
+    -DURING_LIBRARIES="${liburing_path[0]}"/lib/liburing.so \
     -DURING_INCLUDE_DIRS="${liburing_path[0]}"/include \
     -DGRN_LOG_PATH=/var/log/groonga.log \
     -DMYSQL_UNIX_ADDR=/run/mysqld/mysqld.sock \

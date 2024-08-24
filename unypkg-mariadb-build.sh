@@ -11,7 +11,7 @@ apt install -y jq
 wget -qO- uny.nu/pkg | bash -s buildsys
 
 ### Installing build dependencies
-unyp install cmake libxml2 pcre2 libevent openssl curl boost fmt procps liburing lz4 jemalloc systemd ncurses
+unyp install cmake libxml2 pcre2 libevent openssl curl boost fmt procps liburing lz4 jemalloc ncurses #systemd
 
 #cp -a /uny/pkg/ncurses/*/include/*/* /uny/pkg/ncurses/*/include/
 
@@ -120,7 +120,6 @@ cmake -DCMAKE_BUILD_TYPE=Release \
     -DWITH_LIBWRAP=OFF \
     -DWITH_READLINE=ON \
     -DWITH_SSL=system \
-    -DWITH_SYSTEMD=yes \
     -DWITH_UNIT_TESTS=OFF \
     -DCONC_WITH_UNIT_TESTS=OFF \
     -DWITH_ZLIB=system \
@@ -133,6 +132,8 @@ cmake -DCMAKE_BUILD_TYPE=Release \
     -DPLUGIN_AUTH_PAM=NO \
     -DPLUGIN_AWS_KEY_MANAGEMENT=NO \
     ..
+
+#    -DWITH_SYSTEMD=yes \
 
 make -j"$(nproc)"
 make -j"$(nproc)" install

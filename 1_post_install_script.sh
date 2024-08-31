@@ -21,6 +21,10 @@ if [[ ! -d /var/lib/mysql ]]; then
     chown -R mysql:mysql /var/lib/mysql
 fi
 
+if [[ ! -d /run/mysqld ]]; then
+    install -v -m755 -o mysql -g mysql -d /run/mysqld
+fi
+
 #    install -v -m755 -o mysql -g mysql -d /run/mysqld &&
 #        bin/mariadbd-safe --user=mysql 2>&1 >/dev/null &
 #    mariadb-admin -u root password

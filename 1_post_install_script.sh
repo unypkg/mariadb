@@ -13,7 +13,9 @@ cd "$unypkg_root_dir" || exit
 groupadd -r mysql
 useradd -c "MySQL Server" -d /var/lib/mysql -g mysql -s /bin/false -r mysql
 
-cp -a support-files/systemd/* /etc/systemd/system
+cp -a support-files/systemd/mariadb.service /etc/systemd/system/uny-mariadb.service
+#sed "s|.*Alias=.*||g" -i /etc/systemd/system/uny-mariadb.service
+sed -e '/\[Install\]/a\' -e 'Alias=mariadb.service mysqld.service mysql.service' -i /etc/systemd/system/uny-mariadb.service
 systemctl daemon-reload
 
 if [[ ! -d /var/lib/mysql ]]; then

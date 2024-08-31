@@ -11,7 +11,7 @@ apt install -y jq
 wget -qO- uny.nu/pkg | bash -s buildsys
 
 ### Installing build dependencies
-unyp install cmake libxml2 pcre2 libevent openssl curl boost fmt procps liburing lz4 jemalloc ncurses #systemd
+unyp install cmake libxml2 pcre2 libevent openssl curl boost fmt procps liburing lz4 jemalloc ncurses systemd
 
 #cp -a /uny/pkg/ncurses/*/include/*/* /uny/pkg/ncurses/*/include/
 

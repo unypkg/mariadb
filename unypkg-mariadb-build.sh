@@ -130,10 +130,10 @@ cmake -DCMAKE_BUILD_TYPE=Release \
     -DINSTALL_SQLBENCHDIR="" \
     -DPLUGIN_AUTH_PAM=NO \
     -DPLUGIN_AWS_KEY_MANAGEMENT=NO \
+    -DWITH_SYSTEMD=yes \
     ..
 
 #    -DWITHOUT_CLIENTLIBS=YES \
-#    -DWITH_SYSTEMD=yes \
 
 make -j"$(nproc)"
 make -j"$(nproc)" install

@@ -10,16 +10,21 @@ cd "$unypkg_root_dir" || exit
 #############################################################################################
 ### Start of script
 
-groupadd -g 40 mysql
-useradd -c "MySQL Server" -d /var/lib/mysql -g mysql -s /bin/false -u 40 mysql
+groupadd -r mysql
+useradd -c "MySQL Server" -d /var/lib/mysql -g mysql -s /bin/false -r mysql
 
 cp -a support-files/systemd/* /etc/systemd/system
 systemctl daemon-reload
 
 if [[ ! -d /var/lib/mysql ]]; then
-    mysql_install_db --basedir="$unypkg_root_dir" --datadir=/var/lib/mysql --user=mysql
+    scripts/mariadb-install-db --basedir="$unypkg_root_dir" --datadir=/var/lib/mysql --user=mysql
     chown -R mysql:mysql /var/lib/mysql
 fi
+
+#    install -v -m755 -o mysql -g mysql -d /run/mysqld &&
+#        bin/mariadbd-safe --user=mysql 2>&1 >/dev/null &
+#    mariadb-admin -u root password
+#    mariadb-admin -p shutdown
 
 #############################################################################################
 ### End of script

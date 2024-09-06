@@ -32,8 +32,10 @@ fi
 #    mariadb-admin -u root password
 #    mariadb-admin -p shutdown
 
-install -v -dm 755 /etc/uny/mariadb
-cat >/etc/uny/mariadb/my.cnf <<"EOF"
+install -v -dm 755 -o mysql -g mysql /etc/uny/mariadb
+
+if [[ ! -s /etc/uny/mariadb/my.cnf ]]; then
+    cat >/etc/uny/mariadb/my.cnf <<"EOF"
 # Begin /etc/uny/mariadb/my.cnf
 
 # The following options will be passed to all MySQL clients
@@ -103,6 +105,7 @@ interactive-timeout
 
 # End /etc/mysql/my.cnf
 EOF
+fi
 
 #############################################################################################
 ### End of script

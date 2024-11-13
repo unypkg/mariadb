@@ -36,7 +36,8 @@ uny_build_date
 mkdir -pv /uny/sources
 cd /uny/sources || exit
 
-latest_stable_ver_start="$(wget -O- -q https://downloads.mariadb.org/rest-api/mariadb/ | jq -r '[.major_releases[] | select(.release_support_type=="Long Term Support")][0].release_id')"
+release_page="$(wget -O- -q https://downloads.mariadb.org/rest-api/mariadb/)"
+latest_stable_ver_start="$(echo "$release_page" | jq -r '[.major_releases[] | select(.release_support_type=="Long Term Support")][0].release_id')"
 
 pkgname="mariadb"
 pkggit="https://github.com/MariaDB/server.git refs/tags/mariadb-$latest_stable_ver_start*"

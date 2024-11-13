@@ -40,12 +40,12 @@ latest_stable_ver_start="$(wget -O- -q https://downloads.mariadb.org/rest-api/ma
 
 pkgname="mariadb"
 pkggit="https://github.com/MariaDB/server.git"
-refs="refs/tags/mariadb-$latest_stable_ver_start*"
+refs="refs/tags/mariadb-$latest_stable_ver_start.*"
 gitdepth="--depth=1"
 
 ### Get version info from git remote
 # shellcheck disable=SC2086
-latest_head="$(git ls-remote --refs --tags --sort="v:refname" $pkggit $refs | grep -E "mariadb-[0-9.]+$" | tail --lines=1)"
+latest_head="$(git ls-remote --refs --tags --sort="v:refname" $pkggit | grep "$refs" | tail --lines=1)"
 latest_ver="$(echo "$latest_head" | grep -o "mariadb-[0-9.].*" | sed "s|mariadb-||")"
 latest_commit_id="$(echo "$latest_head" | cut --fields=1)"
 

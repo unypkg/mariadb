@@ -36,16 +36,16 @@ uny_build_date
 mkdir -pv /uny/sources
 cd /uny/sources || exit
 
-release_page="$(wget -O- -q https://downloads.mariadb.org/rest-api/mariadb/)"
-latest_stable_ver_start="$(echo "$release_page" | jq -r '[.major_releases[] | select(.release_support_type=="Long Term Support")][0].release_id')"
+latest_stable_ver_start="$(wget -O- -q https://downloads.mariadb.org/rest-api/mariadb/ | jq -r '[.major_releases[] | select(.release_support_type=="Long Term Support")][0].release_id')"
 
 pkgname="mariadb"
-pkggit="https://github.com/MariaDB/server.git refs/tags/mariadb-$latest_stable_ver_start*"
+pkggit="https://github.com/MariaDB/server.git"
+refs="refs/tags/mariadb-$latest_stable_ver_start*"
 gitdepth="--depth=1"
 
 ### Get version info from git remote
 # shellcheck disable=SC2086
-latest_head=$(git ls-remote --refs --tags --sort="v:refname" $pkggit | grep -E "mariadb-[0-9.]+$" | tail --lines=1)
+latest_head="$(git ls-remote --refs --tags --sort="v:refname" $pkggit $refs | grep -E "mariadb-[0-9.]+$" | tail --lines=1)"
 latest_ver="$(echo "$latest_head" | grep -o "mariadb-[0-9.].*" | sed "s|mariadb-||")"
 latest_commit_id="$(echo "$latest_head" | cut --fields=1)"
 

@@ -140,6 +140,9 @@ cmake -DCMAKE_BUILD_TYPE=Release \
 make -j"$(nproc)"
 make -j"$(nproc)" install
 
+mkdir /uny/pkg/"$pkgname"/"$pkgver"/etc
+cp -a /etc/uny/mariadb/* /uny/pkg/"$pkgname"/"$pkgver"/etc
+
 ####################################################
 ### End of individual build script
 

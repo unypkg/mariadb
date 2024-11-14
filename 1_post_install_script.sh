@@ -68,8 +68,8 @@ server-id       = 1
 #bdb_max_lock = 10000
 
 # InnoDB tables are now used by default
-innodb_data_home_dir = /srv/mysql
-innodb_log_group_home_dir = /srv/mysql
+#innodb_data_home_dir = /srv/mysql
+#innodb_log_group_home_dir = /srv/mysql
 # All the innodb_xxx values below are the default ones:
 innodb_data_file_path = ibdata1:12M:autoextend
 # You can set .._buffer_pool_size up to 50 - 80 %

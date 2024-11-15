@@ -27,7 +27,6 @@ systemctl daemon-reload
 install -v -dm 755 -o mysql -g mysql /etc/uny/mariadb /etc/uny/mariadb/my.cnf.d
 
 cp -a etc/my.cnf /etc/uny/mariadb
-sed "s|/etc/my.cnf.d|/etc/uny/mariadb/my.cnf.d|" -i /etc/uny/mariadb/my.cnf
 
 if [[ ! -s /etc/uny/mariadb/my.cnf.d/00-base.cnf ]]; then
     cat >/etc/uny/mariadb/my.cnf.d/00-base.cnf <<"EOF"
@@ -47,7 +46,7 @@ datadir         = /var/lib/mysql
 EOF
 fi
 
-if ! ls /var/lib/mysql/* >/dev/null 2>&1; then
+if [ ! -d /var/lib/mysql/mysql ]; then
     install -v -dm 755 -o mysql -g mysql /var/lib/mysql
     scripts/mariadb-install-db --basedir="$unypkg_root_dir" --datadir=/var/lib/mysql --user=mysql
 fi

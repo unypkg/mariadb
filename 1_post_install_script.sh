@@ -16,7 +16,7 @@ useradd -c "MySQL Server" -d /var/lib/mysql -g mysql -s /bin/false -r mysql
 cp -a support-files/systemd/mariadb.service /etc/systemd/system/uny-mariadb.service
 #sed "s|.*Alias=.*||g" -i /etc/systemd/system/uny-mariadb.service
 # shellcheck disable=SC1003
-sed -e '/\[Install\]/a\' -e 'Alias=mariadb.service mysqld.service mysql.service' -i /etc/systemd/system/uny-mariadb.service
+sed -e '/\[Install\]/a\' -e 'Alias=mariadb.service mysqld.service mysql.service mdb.service' -i /etc/systemd/system/uny-mariadb.service
 sed -e '/ExecStart=/a\' -e 'RuntimeDirectory=mysqld' -i /etc/systemd/system/uny-mariadb.service
 systemctl daemon-reload
 
@@ -55,6 +55,9 @@ fi
 if [[ ! -d /run/mysqld ]]; then
     install -v -m755 -o mysql -g mysql -d /run/mysqld
 fi
+
+systemctl enable uny-mariadb
+systemctl start uny-mariadb
 
 #############################################################################################
 ### End of script

@@ -60,6 +60,7 @@ git_clone_source_repo
 #cd "$pkg_git_repo_dir" || exit
 #cd /uny/sources || exit
 
+keep_git_dir=yes
 archiving_source
 
 ######################################################################################################################

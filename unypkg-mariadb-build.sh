@@ -68,7 +68,7 @@ archiving_source
 # unyc - run commands in uny's chroot environment
 # shellcheck disable=SC2154
 unyc <<"UNYEOF"
-set -vx
+set -vxe
 source /uny/git/unypkg/fn
 
 pkgname="mariadb"

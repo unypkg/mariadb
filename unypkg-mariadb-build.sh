@@ -145,6 +145,9 @@ mkdir -pv /uny/pkg/"$pkgname"/"$pkgver"/etc
 cp -a /etc/uny/mariadb/* /uny/pkg/"$pkgname"/"$pkgver"/etc
 sed "s|/etc/my.cnf.d|/etc/uny/mariadb/my.cnf.d|" -i /uny/pkg/"$pkgname"/"$pkgver"/etc/my.cnf
 
+sed "s|# OOMScoreAdjust=|OOMScoreAdjust=|" -i /uny/pkg/"$pkgname"/"$pkgver"/support-files/systemd/mariadb.service
+sed "s|Restart=on-abort|Restart=on-abnormal|" -i /uny/pkg/"$pkgname"/"$pkgver"/support-files/systemd/mariadb.service
+
 ####################################################
 ### End of individual build script
 
